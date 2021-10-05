@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.User;
@@ -21,6 +22,14 @@ public class UserController
 	public Iterable<User> all()
 	{
 		List<User> user = userRepository.findAll();
+		
+		return user;
+	}
+	
+	@GetMapping(value = "/user/{userId}")
+	public User getUserById(@PathVariable("userId") Integer userId)
+	{
+		User user = userRepository.getUserByuserId(userId);
 		
 		return user;
 	}

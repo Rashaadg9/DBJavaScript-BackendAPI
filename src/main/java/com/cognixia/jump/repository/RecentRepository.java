@@ -8,5 +8,5 @@ import com.cognixia.jump.model.Recent;
 @Repository
 public interface RecentRepository extends JpaRepository<Recent, Integer>
 {
-
+	Recent getRecentByrecentId(Integer recentId);
 }
