@@ -40,7 +40,7 @@ public class User implements Serializable
 	@Column(name="dob", columnDefinition = "char(10) default '00/00/0000'")
 	private String dob;
 	
-	@Column(name="username", columnDefinition = "varchar(100)")
+	@Column(name="username", columnDefinition = "varchar(100) Unique")
 	@NotBlank(message = "Username cannot be left blank")
 	private String username;
 	

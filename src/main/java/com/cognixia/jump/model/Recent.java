@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,7 +16,6 @@ public class Recent implements Serializable
 	
 	@Id
 	@Column(name="user_id")
-	@GeneratedValue()
 	private Integer recentId;
 	
 	@Column(name="count")
