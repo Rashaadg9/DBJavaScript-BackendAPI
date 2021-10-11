@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.Recent;
+import com.cognixia.jump.model.TransferForm;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.RecentRepository;
 import com.cognixia.jump.repository.UserRepository;
@@ -43,6 +44,22 @@ public class UserController
 		return user;
 	}
 	
+	@GetMapping(value = "/user/username/{username}")
+	public User getUserByUsername(@PathVariable("username") String username)
+	{
+		User user = userRepository.getUserByUsername(username);
+		
+		return user;
+	}
+	
+	@GetMapping(value = "/user/check/{username}")
+	public int userCheck(@PathVariable("username") String username)
+	{
+		int i = userRepository.userCheck(username);
+		
+		return i;
+	}
+	
 	@PostMapping(value = "/user/login")
 	public User userLogin(@RequestBody User user)
 	{
@@ -68,6 +85,20 @@ public class UserController
 	@PatchMapping(value = "/user/update")
 	public User userUpdate(@RequestBody User user)
 	{
-		return userRepository.save(user);	}
+		return userRepository.save(user);
+	}
+	
+	@PatchMapping(value = "/user/transfer")
+	public User userTransfer(@RequestBody TransferForm transfer)
+	{
+		User from = userRepository.getUserByuserId(transfer.getFromId());
+		User to = userRepository.getUserByUsername(transfer.getToUsername());
+		
+		from.setCash( from.getCash() - transfer.getFromCash() );
+		to.setCash( to.getCash() + transfer.getFromCash() );
+		
+		userRepository.save(to);
+		return userRepository.save(from);
+	}
 	
 }

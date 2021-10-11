@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.Recent;
 import com.cognixia.jump.model.RecentUpdate;
+import com.cognixia.jump.model.TransferRecentUpdate;
+import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.RecentRepository;
+import com.cognixia.jump.repository.UserRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -21,6 +24,9 @@ public class RecentController
 {
 	@Autowired
 	private RecentRepository recentRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping(value = "/recent")
 	public Iterable<Recent> all()
@@ -42,6 +48,48 @@ public class RecentController
 	public Recent updateRecent(@RequestBody RecentUpdate recentUpdate)
 	{
 		Recent recent = recentRepository.getRecentByrecentId(recentUpdate.getUserId());
+		int count = recent.getCount();
+		String r = (count) + ". " + recentUpdate.getType() + " - $" + recentUpdate.getCash() + " on " + new Date();
+		
+		int count2 = (count % 5) + 1;
+		
+		String set = "R" + count2;
+		
+		switch(set)
+		{
+			case "R1":
+				recent.setR1(r);
+				recent.setCount(count + 1);
+				break;
+			case "R2":
+				recent.setR2(r);
+				recent.setCount(count + 1);
+				break;
+			case "R3":
+				recent.setR3(r);
+				recent.setCount(count + 1);
+				break;
+			case "R4":
+				recent.setR4(r);
+				recent.setCount(count + 1);
+				break;
+			case "R5":
+				recent.setR5(r);
+				recent.setCount(count + 1);
+				break;
+			default:
+				System.out.println("ERROR");
+				break;
+		
+		}
+		return recentRepository.save(recent);
+	}
+	
+	@PatchMapping(value = "/recent/update/transfer")
+	public Recent transferUpdateRecent(@RequestBody TransferRecentUpdate recentUpdate)
+	{
+		User user = userRepository.getUserByUsername(recentUpdate.getUsername());
+		Recent recent = recentRepository.getRecentByrecentId(user.getUserId());
 		int count = recent.getCount();
 		String r = (count) + ". " + recentUpdate.getType() + " - $" + recentUpdate.getCash() + " on " + new Date();
 		
