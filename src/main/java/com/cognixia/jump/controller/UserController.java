@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,4 +102,13 @@ public class UserController
 		return userRepository.save(from);
 	}
 	
+	@DeleteMapping(value = "user/delete/{userId}")
+	public void userDelete(@PathVariable Integer userId)
+	{
+		User user = userRepository.getUserByuserId(userId);
+		Recent recent = recentRepository.getRecentByrecentId(userId);
+		
+		userRepository.delete(user);
+		recentRepository.delete(recent);
+	}
 }
